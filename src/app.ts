@@ -18,28 +18,26 @@ app.get("/", (req: Request, res: Response) => {
   res.send("Hello Developer!");
 });
 
-////auth crud
+////auth 
 app.use("/api/v1/auth/", authRouter);
 
 
-//Vehicle CRUD
+//Vehicle 
 app.use("/api/v1/vehicles/", vehicleRouter)
 
-//  ///Users crud
-
+//Users
 app.use("/api/v1/users/", userRoute);
-
 
 /// Bookings
 app.use("/api/v1/bookings/", bookingRouter);
 
 
-
 //not found
 app.use((req, res) => {
   res.status(404).json({
+    success: false,
     message: "Path not found",
-    path: req.path,
+    errors: "Route does not exist",
   });
 });
 

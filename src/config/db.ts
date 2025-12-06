@@ -26,7 +26,7 @@ const initDB = async () => {
         type VARCHAR(50) NOT NULL CHECK (type IN ('car', 'bike', 'van', 'SUV')),
         registration_number VARCHAR(50) NOT NULL UNIQUE,
         daily_rent_price NUMERIC NOT NULL CHECK (daily_rent_price > 0),
-        availability_status VARCHAR (50) NOT NULL CHECK (availability_status IN ('available', 'booked'))
+        availability_status VARCHAR (50) NOT NULL DEFAULT 'available' CHECK (availability_status IN ('available', 'booked'))
         
         
         );
@@ -35,8 +35,8 @@ const initDB = async () => {
   await pool.query(`
         CREATE TABLE IF NOT EXISTS bookings(
         id SERIAL PRIMARY KEY,
-        customer_id INT REFERENCES users(id) ON DELETE CASCADE,
-        vehicle_id INT REFERENCES vehicles(id) ON DELETE CASCADE,
+        customer_id INT REFERENCES users(id),
+        vehicle_id INT REFERENCES vehicles(id),
         rent_start_date DATE NOT NULL,
         rent_end_date DATE NOT NULL,
         total_price NUMERIC NOT NULL CHECK (total_price > 0),

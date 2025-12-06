@@ -6,6 +6,8 @@ const auth = (...roles: string[]) => {
   return async (req: Request, res: Response, next: NextFunction) => {
     try {
       const authHeader = req.headers.authorization;
+
+     
       if (!authHeader || !authHeader.startsWith("Bearer ")) {
         return res.status(401).json({
           success: false,
@@ -13,28 +15,45 @@ const auth = (...roles: string[]) => {
           errors: "Missing or invalid authentication token",
         });
       }
+
       const token = authHeader.split(" ")[1];
+
       if (!token) {
-        return res.status(500).json({ message: "you are not allowed!!" });
+        return res.status(401).json({
+          success: false,
+          message: "Unauthorized",
+          errors: "Missing authentication token",
+        });
       }
+
       const decoded = jwt.verify(
         token,
         config.jwtSecret as string
       ) as JwtPayload;
-      // console.log({authtoken: token});
-      console.log({ decoded });
+
+    
+      if (!decoded || !decoded.role) {
+        return res.status(401).json({
+          success: false,
+          message: "Unauthorized",
+          errors: "Invalid user token",
+        });
+      }
+
       req.user = decoded;
 
+    
       if (roles.length && !roles.includes(decoded.role)) {
         return res.status(403).json({
           success: false,
           message: "Forbidden",
-          error: "You are unauthorized!",
+          errors: "You are unauthorized!",
         });
       }
+
       next();
     } catch (err: any) {
-      res.status(401).json({
+      return res.status(401).json({
         success: false,
         message: "Unauthorized",
         errors: "Invalid or expired token",
@@ -44,3 +63,4 @@ const auth = (...roles: string[]) => {
 };
 
 export default auth;
+

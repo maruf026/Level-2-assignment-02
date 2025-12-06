@@ -24,29 +24,51 @@ const getUsers = async(req: Request, res: Response)=>{
 
 
 const updateUser = async (req: Request, res: Response) => {
-  
   try {
-     const result = await userService.updateUser(req.body, req.params.userId!)
+    const userId = req.params.userId;
+    const { role } = req.body;
 
-    if (result.rows.length === 0) {
-      res.status(404).json({
+    // Customer cannot update others
+    if (req.user?.role === "customer" && req.user?.id !== Number(userId)) {
+      return res.status(403).json({
         success: false,
-        message: "User not updated",
-      });
-    } else {
-      res.status(200).json({
-        success: true,
-        message: "User updated successfully",
-        data: result.rows,
+        message: "Forbidden",
+        errors: "Customers can only update their own profile",
       });
     }
+
+    // Customer cannot change own role
+    if (req.user?.role === "customer" && role) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid update",
+        errors: "Customers are not allowed to change role",
+      });
+    }
+
+    const result = await userService.updateUser(req.body, userId!);
+
+    if (!result || result.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "User updated successfully",
+      data: result.rows[0],
+    });
+
   } catch (err: any) {
     res.status(500).json({
       success: false,
       message: err.message,
     });
   }
-}
+};
+
 
 
 const deleteUser = async (req: Request, res: Response) => {
