@@ -2,7 +2,7 @@
 
 A backend REST API for managing vehicles, user authentication, and rental bookings. This system is built using Node.js, Express, TypeScript, and PostgreSQL.
 
-📌 Live URL:
+📌 Live URL: https://assignment-02-alpha-eight.vercel.app/
 
 
 🌟 Features
@@ -31,7 +31,7 @@ jsonwebtoken (JWT authentication)
  🔧 Installation
 
 
-git clone repo-url
+git clone https://github.com/maruf026/Level-2-assignment-02
 cd Level-2-assignment-02
 npm install
 
@@ -45,21 +45,6 @@ Production Build:
 
 npm run build
 npm start
-
-
- 📎 Project Folder Structure
-
-
-src/
- ├─ config/
- ├─ middleware/
- ├─ modules/
- │   ├─ auth/
- │   ├─ users/
- │   ├─ vehicles/
- │   └─ bookings/
- ├─ app.ts
- └─ server.ts
 
 
 This project follows clean coding practices, modular architecture, and secure authentication with proper Role-Based Access Control.
