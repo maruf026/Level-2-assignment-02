@@ -15,7 +15,7 @@ app.use(express.json());
 initDB();
 
 app.get("/", (req: Request, res: Response) => {
-  res.send("Hello Developer!");
+  res.send("Vehicle Rental System API is running successfully");
 });
 
 ////auth 

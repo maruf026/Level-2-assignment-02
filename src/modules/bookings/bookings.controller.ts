@@ -93,7 +93,7 @@ const updateBooking = async (req: Request, res: Response) => {
       });
     }
 
-    // 4. Call service to update booking + vehicle availability
+   
     const result = await bookingService.updateBooking(status, bookingId!);
 
     if (!result) {
